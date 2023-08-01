@@ -18,13 +18,15 @@ namespace GameMafia.Core.Models
 
         public int UserId { get; set; }
 
-        public int? RoleId { get; set; }
+        public string? RoleName { get; set; }
 
         public DayNight? DeathDate { get; set; }
 
         public int Heal { get; set; } = 0;
 
         public int Count { get; set; } = 0;
+
+        public int CountPlayersStart { get; set; } = 0;
 
 
         public ICollection<Message> Messages { get; set; }

@@ -52,7 +52,6 @@ namespace GameMafia.Migrations
                     FullName = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Summ = table.Column<int>(type: "integer", nullable: false),
                     Security = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -89,10 +88,12 @@ namespace GameMafia.Migrations
                     PlayerId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: true),
+                    RoleName = table.Column<string>(type: "text", nullable: true),
                     DeathDate = table.Column<int>(type: "integer", nullable: true),
                     Heal = table.Column<int>(type: "integer", nullable: false),
-                    Count = table.Column<int>(type: "integer", nullable: false)
+                    Count = table.Column<int>(type: "integer", nullable: false),
+                    CountPlayersStart = table.Column<int>(type: "integer", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {

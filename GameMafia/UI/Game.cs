@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GameMafia.Core.Data;
+using GameMafia.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,8 +16,10 @@ namespace GameMafia.UI
     {
         public static int i;
         public List<Panel> ls = new List<Panel>();
-        public Game()
+        public Player player;
+        public Game(Player player1)
         {
+            player = player1;
             InitializeComponent();
         }
 
@@ -45,13 +49,40 @@ namespace GameMafia.UI
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            if ((guna2TextBox1.Text).Length>0)
+            if ((guna2TextBox1.Text).Length > 0)
             {
-               listBox1.ForeColor = Color.White;
+                listBox1.ForeColor = Color.White;
                 listBox1.Items.Add(guna2TextBox1.Text);
                 guna2TextBox1.Text = "";
-            }   
+            }
 
+        }
+
+        private void guna2Panel5_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2Panel7_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Game_Load(object sender, EventArgs e)
+        {
+            var db = new MafiaGameDb();
+
+            var user12 = db.Users.FirstOrDefault(user => user.UserId == player.UserId);
+            if (user12 != null)
+            {
+                guna2HtmlLabel1.Text = $"{user12.FullName} , {user12.UserName}";
+                guna2HtmlLabel2.Text = player.RoleName;
+            }
         }
     }
 }

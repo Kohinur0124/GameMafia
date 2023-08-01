@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameMafia.Migrations
 {
     [DbContext(typeof(MafiaGameDb))]
-    [Migration("20230727145341_initial1")]
-    partial class initial1
+    [Migration("20230801120648_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -332,6 +332,9 @@ namespace GameMafia.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("integer");
 
+                    b.Property<int>("CountPlayersStart")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("DeathDate")
                         .HasColumnType("integer");
 
@@ -340,6 +343,9 @@ namespace GameMafia.Migrations
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("RoleName")
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

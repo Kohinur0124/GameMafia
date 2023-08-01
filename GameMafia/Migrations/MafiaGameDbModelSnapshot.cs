@@ -329,6 +329,9 @@ namespace GameMafia.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("integer");
 
+                    b.Property<int>("CountPlayersStart")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("DeathDate")
                         .HasColumnType("integer");
 
@@ -337,6 +340,9 @@ namespace GameMafia.Migrations
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("RoleName")
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
