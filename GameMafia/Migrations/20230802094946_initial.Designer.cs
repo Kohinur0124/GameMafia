@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GameMafia.Migrations
 {
     [DbContext(typeof(MafiaGameDb))]
-    [Migration("20230801120648_initial")]
+    [Migration("20230802094946_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -343,9 +343,6 @@ namespace GameMafia.Migrations
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("RoleName")
-                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

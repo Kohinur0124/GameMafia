@@ -1,4 +1,5 @@
 ﻿using GameMafia.Core.Abstract;
+using GameMafia.Core.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,5 +22,12 @@ namespace GameMafia.Core.Models
 
 
         public Player Player { get; set; }
+
+        public override string ToString()
+        {
+            var db = new MafiaGameDb();
+            var user = db.Users.FirstOrDefault(user => user.UserId == db.Player.First(p => p.PlayerId == this.PlayerId).UserId);
+            return $"{user.UserName} : {MessagePlayer}";
+        }
     }
 }

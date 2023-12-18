@@ -18,7 +18,7 @@ namespace GameMafia.Core.Models
 
         public int UserId { get; set; }
 
-        public string? RoleName { get; set; }
+        public int? RoleId { get; set; }
 
         public DayNight? DeathDate { get; set; }
 

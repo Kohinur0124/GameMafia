@@ -1,11 +1,6 @@
 ﻿using GameMafia.Core.Enum;
 using GameMafia.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameMafia.Core.Data
 {
@@ -30,11 +25,13 @@ namespace GameMafia.Core.Data
         
         public DbSet<Models.Message> Messages { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public delegate void DelSeedData(ModelBuilder modelBuilder);
+
+        
+
+        #region SeedData Role
+        public void SeedDataRole(ModelBuilder modelBuilder)
         {
-
-            #region SeedData Role
-
             modelBuilder.Entity<Role>().HasData(new List<Role>()
             {
                 new Role()
@@ -87,13 +84,13 @@ namespace GameMafia.Core.Data
                     Type = RoleType.Gray,
                 }
 
+            });
+        }
+        #endregion SeedData Role
 
-            }); ;
-
-            #endregion SeedData Role
-
-
-            #region SeedData CountRole
+        #region SeedData CountRole
+        public void SeedDataCountRole(ModelBuilder modelBuilder)
+        {
 
             modelBuilder.Entity<CountRole>().HasData(new List<CountRole>
             {
@@ -325,25 +322,34 @@ namespace GameMafia.Core.Data
 
                 },
             });
+        }
+        #endregion SeedData CountRole
 
-            #endregion SeedData CountRole
-
-
-            #region SeedData Market
+        #region SeedData Market
+        public void SeedDataMarket(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Market>().HasData(new List<Market>
             {
                 new Market()
                 {
                     MarketId = 1,
-                    Name = "Himoya" , 
+                    Name = "Himoya" ,
                     Price = 100,
                 },
             });
+        }
 
-            #endregion SeedData Market
+        #endregion SeedData Market
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
 
+            DelSeedData delSeedData = new DelSeedData(SeedDataRole);
+            delSeedData += SeedDataCountRole;
+            delSeedData += SeedDataMarket;
+
+            delSeedData.Invoke(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }

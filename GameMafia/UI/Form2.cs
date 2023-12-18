@@ -31,7 +31,7 @@ namespace GameMafia.UI
             Form1 form1 = new Form1();
             form1.Show();
             this.Close();
-        } 
+        }
 
         //
         public User user = new User();
@@ -62,8 +62,8 @@ namespace GameMafia.UI
                                 Security = 0,
                                 Summ = 0,
                             };*/
-                            
-                           
+
+
                             db.Users.Add(user);
                             db.SaveChanges();
                             Main main = new Main(user);

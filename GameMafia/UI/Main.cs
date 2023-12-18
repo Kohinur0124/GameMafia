@@ -1,6 +1,8 @@
 ﻿using GameMafia.Core.Data;
 using GameMafia.Core.Models;
 using GameMafia.Services;
+using Guna.UI2.WinForms;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,12 +21,15 @@ namespace GameMafia.UI
     {
         public bool t = true;
         public User user { get; set; }
-        public Player player = new Player();  
-            
-        public Main(User user)
+        public Player player1 ;
+        public MafiaGameDb db ;
+        public Main(User user1)
         {
-            this.user = user;
+            db = new MafiaGameDb();
+            this.user = user1;
+            player1 = new Player();
             InitializeComponent();
+            player1.UserId = user1.UserId;
         }
 
         private void guna2Panel3_Paint(object sender, PaintEventArgs e)
@@ -34,17 +39,22 @@ namespace GameMafia.UI
 
         private void guna2Button5_Click(object sender, EventArgs e)
         {
-            if (t)
+           if (t)
             {
                 guna2Panel1.Width = 70;
                 t = false;
                 guna2Panel8.Location = new Point(200, 54);
+                guna2Button2.Enabled = false;
+                guna2Button3.Enabled = false;
+                guna2Button4.Enabled = false;
             }
             else
             {
                 guna2Panel1.Width = 300;
                 t = true;
-
+                guna2Button2.Enabled = true;
+                guna2Button3.Enabled = true;
+                guna2Button4.Enabled = true;
                 guna2Panel8.Location = new Point(331, 54);
             }
 
@@ -59,41 +69,49 @@ namespace GameMafia.UI
                 guna2ComboBox1.Visible = true;
 
             }
-            else if (db.Player.FirstOrDefault(player => player.UserId == user.UserId) == null)
+            else if (db.Player.FirstOrDefault(player => player.UserId == user.UserId) == null && db.Player.Count() < player1.CountPlayersStart)
             {
                 guna2GradientButton2.Visible = true;
             }
             else
             {
+
                 guna2GradientButton1.Visible = false;
                 guna2GradientButton2.Visible = false;
                 guna2ComboBox1.Visible = false;
+             
 
-                if (db.Player.Count() == db.Player.ToList()[0].CountPlayersStart)
+                var player = db.Player.FirstOrDefault(p => p.UserId == user.UserId);
+                if (player != null)
                 {
 
-                    var  roles = db.CountRole.Where(role => role.CountPlayer == db.Player.First().CountPlayersStart).ToList();
+                    if (db.Player.Count() == player.CountPlayersStart)
+                    {
 
-                    List<string> rolesString = new List<string>();
-                    foreach (var role in roles)
-                    {
-                        for(int i=0;i<role.CountRoles; i++)
+                        if (db.Player.First().RoleId == null)
                         {
-                            rolesString.Add(db.Roles.FirstOrDefault(p=>p.RoleId == role.RoleId).Name);
+                            var roles = db.CountRole.Where(role => role.CountPlayer == db.Player.First().CountPlayersStart).AsNoTracking().ToList();
+
+                            List<int> rolesString = new List<int>();
+                            foreach (var role in roles)
+                            {
+                                for (int i = 0; i < role.CountRoles; i++)
+                                {
+                                    rolesString.Add(role.RoleId);
+                                }
+                            }
+                            rolesString.Shuffle<int>();
+                            var lsPlayer = db.Player.ToList();
+                            for (int i = 0; i < rolesString.Count; i++)
+                            {
+
+                                lsPlayer[i].RoleId = rolesString[i];
+                                db.Player.Update(lsPlayer[i]);
+                                db.SaveChanges();
+
+                            }
                         }
                     }
-                    rolesString.Shuffle<string>();
-                    for (int i=0;i<rolesString.Count;i++)
-                    {
-                        var player1 = db.Player.FirstOrDefault(p => p.PlayerId == i + 1);
-                        if (player1 != null)
-                        {
-                            player1.RoleName = rolesString[i];
-                            db.Player.Update(player1);
-                            db.SaveChanges();
-                        }
-                    }
-                    
 
                     guna2HtmlLabel1.Visible = true;
                     guna2Button1.Enabled = true;
@@ -105,12 +123,7 @@ namespace GameMafia.UI
 
             }
 
-            /* while (true)
-             {
-                 for(int i = 0; i < 100; i++)
-                 {
-
-                 }
+       /*
 
                  if (db.Player.Count() == db.Player.ToList()[0].CountPlayersStart)
                  {
@@ -119,8 +132,8 @@ namespace GameMafia.UI
                      guna2GradientButton2.Visible = false;
                      guna2HtmlLabel1.Visible = true;
                  }
-
-             }*/
+*/
+             
         }
 
         private void guna2Button4_Click(object sender, EventArgs e)
@@ -133,10 +146,14 @@ namespace GameMafia.UI
         private void guna2Button1_Click(object sender, EventArgs e)
         {
             var db = new MafiaGameDb();
-            player = db.Player.FirstOrDefault(player => player.UserId == user.UserId);
-            Game game = new Game(player);
-            game.Show();
-            this.Close();
+            var player = db.Player.FirstOrDefault(player => player.UserId == user.UserId);
+            if (player != null)
+            {
+                Game game = new Game(player);
+                game.Show();
+                this.Close();
+
+            }
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)
@@ -159,7 +176,7 @@ namespace GameMafia.UI
 
             {
 
-                /*if (db.Player.ToList() == null)
+                if (db.Player.ToList() == null)
                 {
                     guna2Button1.Visible = true;
 
@@ -170,21 +187,52 @@ namespace GameMafia.UI
                 }
                 else
                 {
-                    guna2Button1.Visible = false;
+                    /*guna2Button1.Visible = false;
                     guna2Button2.Visible = false;
-
+                    */
                     if (db.Player.Count() == db.Player.ToList()[0].CountPlayersStart)
                     {
                         guna2HtmlLabel1.Visible = true;
                     }
 
 
-                */
+                }
             }
         }
 
         private void guna2Button6_Click(object sender, EventArgs e)
         {
+            /* var db = new MafiaGameDb();
+             if (db.Player.Count() == db.Player.ToList()[0].CountPlayersStart)
+             {
+
+                 var roles = db.CountRole.Where(role => role.CountPlayer == db.Player.First().CountPlayersStart).ToList();
+
+                 List<Role> rolesString = new List<Role>();
+                 foreach (var role in roles)
+                 {
+                     for (int i = 0; i < role.CountRoles; i++)
+                     {
+                         rolesString.Add(db.Roles.FirstOrDefault(p => p.RoleId == role.RoleId));
+                     }
+                 }
+                 rolesString.Shuffle<Role>();
+                 var lsPlayer = db.Player.ToList();
+                 for (int i = 0; i < rolesString.Count; i++)
+                 {
+
+                     lsPlayer[i].RoleId = rolesString[i].RoleId;
+                     db.Player.Update(lsPlayer[i]);
+                     db.SaveChanges();
+
+                 }
+
+
+
+
+             }*/
+            //guna2HtmlLabel1.Visible = true;
+            //guna2Button1.Enabled = true;
             Main main = new Main(user);
             main.Show();
             this.Close();
@@ -200,12 +248,11 @@ namespace GameMafia.UI
             var db = new MafiaGameDb();
             if (guna2ComboBox1.SelectedIndex >= 0)
             {
-                player.UserId = user.UserId;
-                player.CountPlayersStart = Convert.ToInt32(player.CountPlayersStart);
-                db.Player.Add(player);
+                player1.UserId = user.UserId;
+                player1.CountPlayersStart = Convert.ToInt32(guna2ComboBox1.SelectedItem);
+                db.Player.Add(player1);
                 db.SaveChanges();
                 guna2ComboBox1.Visible = false;
-
                 guna2GradientButton1.Text = "Siz o`yinga qo`shildingiz !";
                 guna2GradientButton1.Enabled = false;
             }
@@ -215,12 +262,17 @@ namespace GameMafia.UI
         private void guna2GradientButton2_Click(object sender, EventArgs e)
         {
             var db = new MafiaGameDb();
-            player.UserId = user.UserId;
-            player.CountPlayersStart = db.Player.First().CountPlayersStart;
-            db.Player.Add(player);
+            player1.UserId = user.UserId;
+            player1.CountPlayersStart = db.Player.First().CountPlayersStart;
+            db.Player.Add(player1);
             db.SaveChanges();
             guna2GradientButton2.Text = "Siz o`yinga qo`shildingiz !";
             guna2GradientButton2.Enabled = false;
+
+        }
+
+        private void guna2Panel1_Paint(object sender, PaintEventArgs e)
+        {
 
         }
     }

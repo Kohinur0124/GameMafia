@@ -341,9 +341,6 @@ namespace GameMafia.Migrations
                     b.Property<int?>("RoleId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("RoleName")
-                        .HasColumnType("text");
-
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 

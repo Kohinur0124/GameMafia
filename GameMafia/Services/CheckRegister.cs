@@ -13,7 +13,7 @@ namespace GameMafia.Services
     {
         public static bool PasswordChecked(string password)
         {
-            Regex PasswordRegex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$");
+            Regex PasswordRegex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*_-]).{8,}$");
             if (PasswordRegex.IsMatch(password))
             {
                 return true;
@@ -23,7 +23,7 @@ namespace GameMafia.Services
 
         public static bool CheckUserName(string username) 
         {
-            Regex UsernameRegex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$");
+            Regex UsernameRegex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*_-]).{8,}$");
             if (UsernameRegex.IsMatch(username))
             {
                     return true;   

@@ -17,13 +17,10 @@ namespace GameMafia.Services
             {
                 var db = new MafiaGameDb();
                 var user = db.Users.FirstOrDefault(user => user.UserName == username);
+                // db.Users.Any(user => user.UserName == username);
                 if (user != null)
                 {
-                    if( user.UserName == username ) 
-                    { 
-                        return true;
-                    }
-                    return false;
+                    return true;
                 }
                 return false;
             }

@@ -12,6 +12,6 @@ namespace GameMafia.Core.Interface
 
         public string MessagePlayer { get; set; }
 
-        public DateTime DTime { get; set; }
+        public DateTimeOffset DTime { get; set; }
     }
 }

@@ -88,12 +88,11 @@ namespace GameMafia.Migrations
                     PlayerId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    RoleName = table.Column<string>(type: "text", nullable: true),
+                    RoleId = table.Column<int>(type: "integer", nullable: true),
                     DeathDate = table.Column<int>(type: "integer", nullable: true),
                     Heal = table.Column<int>(type: "integer", nullable: false),
                     Count = table.Column<int>(type: "integer", nullable: false),
-                    CountPlayersStart = table.Column<int>(type: "integer", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: true)
+                    CountPlayersStart = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

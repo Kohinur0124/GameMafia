@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 
 namespace GameMafia.Services
 {
     public static class MethodStatics
     {
+        static Random _rand = new Random();
         public static void Shuffle<T>(this IList<T> ts)
         {
-            var count = ts.Count;
-            var last = count - 1;
-            for (var i = 0; i < last; ++i)
+            int n = ts.Count;
+            while (n > 1)
             {
-                var r = UnityEngine.Random.Range(i, count);
-                var tmp = ts[i];
-                ts[i] = ts[r];
-                ts[r] = tmp;
+                n--;
+                int k = _rand.Next(n + 1);
+                T value = ts[k];
+                ts[k] = ts[n];
+                ts[n] = value;
             }
         }
     }

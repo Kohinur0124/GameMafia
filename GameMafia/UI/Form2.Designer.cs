@@ -144,7 +144,7 @@
             guna2TextBox2.Location = new Point(608, 381);
             guna2TextBox2.Margin = new Padding(5, 6, 5, 6);
             guna2TextBox2.Name = "guna2TextBox2";
-            guna2TextBox2.PasswordChar = '\0';
+            guna2TextBox2.PasswordChar = '*';
             guna2TextBox2.PlaceholderText = "Password";
             guna2TextBox2.SelectedText = "";
             guna2TextBox2.ShadowDecoration.CustomizableEdges = customizableEdges6;
