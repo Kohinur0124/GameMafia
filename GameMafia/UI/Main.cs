@@ -183,7 +183,7 @@ namespace GameMafia.UI
                 }
                 else if (db.Player.FirstOrDefault(player => player.UserId == user.UserId) == null)
                 {
-                    guna2Button2.Visible = false;
+                    guna2Button2.Visible = true;
                 }
                 else
                 {

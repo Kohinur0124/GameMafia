@@ -66,12 +66,12 @@ namespace GameMafia.UI
                 var db = new MafiaGameDb();
                 db.Messages.Add(mess);
                 db.SaveChanges();
-                /*Game game = new Game(player);
+                Game game = new Game(player);
                 game.Show();
-                this.Close();*/
+                this.Close();
 
-                //listBox1.ForeColor = Color.White;
-                //listBox1.Items.Add(guna2TextBox1.Text);
+                listBox1.ForeColor = Color.White;
+                listBox1.Items.Add(guna2TextBox1.Text);
                 //guna2TextBox1.Text = "";
             }
 
@@ -97,17 +97,18 @@ namespace GameMafia.UI
             {
                 guna2HtmlLabel1.Text = $"{user12.FullName} , {user12.UserName}";
                 guna2HtmlLabel2.Text = db.Roles.FirstOrDefault(role => role.RoleId == player.RoleId).Name;
+                guna2HtmlLabel3.Text = db.Roles.FirstOrDefault(role => role.RoleId == player.RoleId).Description;
+
             }
             listBox1.Items.Clear();
 
-            while (true)
             {
 
                 foreach (var user in await db.Messages.ToListAsync())
                 {
                     listBox1.Items.Add(user.ToString());
                 }
-                Thread.Sleep(1000);
+
 
             }
 
@@ -146,7 +147,24 @@ namespace GameMafia.UI
         private void guna2Button3_Click(object sender, EventArgs e)
         {
             Game main = new Game(player);
-            main.Show();    
+            main.Show();
+            this.Close();
+        }
+
+        private void guna2Button4_Click(object sender, EventArgs e)
+        {
+            var db = new MafiaGameDb();
+            var userss = db.Player.ToList();
+            foreach (var player1 in userss )
+            {
+
+                db.Player.Remove(player1);
+            }
+            db.SaveChanges();
+            var user = db.Users.FirstOrDefault(x=>x.UserId ==  player.UserId);
+
+            Main main = new Main(user);
+            main.Show();
             this.Close();
         }
     }
