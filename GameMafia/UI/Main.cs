@@ -1,19 +1,8 @@
 ﻿using GameMafia.Core.Data;
 using GameMafia.Core.Models;
 using GameMafia.Services;
-using Guna.UI2.WinForms;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace GameMafia.UI
 {
@@ -21,8 +10,8 @@ namespace GameMafia.UI
     {
         public bool t = true;
         public User user { get; set; }
-        public Player player1 ;
-        public MafiaGameDb db ;
+        public Player player1;
+        public MafiaGameDb db;
         public Main(User user1)
         {
             db = new MafiaGameDb();
@@ -39,7 +28,7 @@ namespace GameMafia.UI
 
         private void guna2Button5_Click(object sender, EventArgs e)
         {
-           if (t)
+            if (t)
             {
                 guna2Panel1.Width = 70;
                 t = false;
@@ -73,13 +62,17 @@ namespace GameMafia.UI
             {
                 guna2GradientButton2.Visible = true;
             }
-            else
+            else if (db.Player.Count() >= player1.CountPlayersStart)
             {
 
+                guna2Button1.Enabled = true;
+                guna2Button1.Visible = true;
+                guna2Button1.Visible = true;
                 guna2GradientButton1.Visible = false;
                 guna2GradientButton2.Visible = false;
                 guna2ComboBox1.Visible = false;
-             
+
+                guna2HtmlLabel1.Visible = true;
 
                 var player = db.Player.FirstOrDefault(p => p.UserId == user.UserId);
                 if (player != null)
@@ -88,7 +81,7 @@ namespace GameMafia.UI
                     if (db.Player.Count() == player.CountPlayersStart)
                     {
 
-                        if (db.Player.First().RoleId == null)
+                        if (db.Player.First().RoleId == 0)
                         {
                             var roles = db.CountRole.Where(role => role.CountPlayer == db.Player.First().CountPlayersStart).AsNoTracking().ToList();
 
@@ -113,8 +106,6 @@ namespace GameMafia.UI
                         }
                     }
 
-                    guna2HtmlLabel1.Visible = true;
-                    guna2Button1.Enabled = true;
 
                 }
 
@@ -123,17 +114,17 @@ namespace GameMafia.UI
 
             }
 
-       /*
+            /*
 
-                 if (db.Player.Count() == db.Player.ToList()[0].CountPlayersStart)
-                 {
-                     //timer1.Stop();
-                     guna2GradientButton1.Visible = false;
-                     guna2GradientButton2.Visible = false;
-                     guna2HtmlLabel1.Visible = true;
-                 }
-*/
-             
+                      if (db.Player.Count() == db.Player.ToList()[0].CountPlayersStart)
+                      {
+                          //timer1.Stop();
+                          guna2GradientButton1.Visible = false;
+                          guna2GradientButton2.Visible = false;
+                          guna2HtmlLabel1.Visible = true;
+                      }
+     */
+
         }
 
         private void guna2Button4_Click(object sender, EventArgs e)
@@ -178,18 +169,24 @@ namespace GameMafia.UI
 
                 if (db.Player.ToList() == null)
                 {
-                    guna2Button1.Visible = true;
+                    guna2Button1.Visible = false;
 
                 }
                 else if (db.Player.FirstOrDefault(player => player.UserId == user.UserId) == null)
                 {
-                    guna2Button2.Visible = true;
+                    guna2Button1.Visible = false;
+                }
+                else if (db.Player.Count() == player1.CountPlayersStart)
+                {
+                    guna2Button1.Visible = true;
+
+
+                    //guna2Button2.Visible = false;
                 }
                 else
                 {
-                    /*guna2Button1.Visible = false;
-                    guna2Button2.Visible = false;
-                    */
+                    guna2Button1.Visible = true;
+
                     if (db.Player.Count() == db.Player.ToList()[0].CountPlayersStart)
                     {
                         guna2HtmlLabel1.Visible = true;

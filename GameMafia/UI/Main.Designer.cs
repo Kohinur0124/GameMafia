@@ -234,7 +234,6 @@
             guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
             guna2Button1.DisabledState.FillColor = Color.Black;
             guna2Button1.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            guna2Button1.Enabled = false;
             guna2Button1.FillColor = Color.Black;
             guna2Button1.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
             guna2Button1.ForeColor = Color.Red;
