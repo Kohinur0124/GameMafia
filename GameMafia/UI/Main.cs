@@ -58,9 +58,12 @@ namespace GameMafia.UI
                 guna2ComboBox1.Visible = true;
 
             }
-            else if (db.Player.FirstOrDefault(player => player.UserId == user.UserId) == null && db.Player.Count() < player1.CountPlayersStart)
+            else if ( db.Player.Count() <= db.Player.ToList()[0].CountPlayersStart)
             {
-                guna2GradientButton2.Visible = true;
+                if(db.Player.FirstOrDefault(x=>x.UserId == user.UserId) == null)
+                {
+                    guna2GradientButton2.Visible = true;
+                }
             }
             else if (db.Player.Count() >= player1.CountPlayersStart)
             {
@@ -110,9 +113,14 @@ namespace GameMafia.UI
                 }
 
 
-
-
             }
+            else
+                {
+                    guna2HtmlLabel1.Text = "O`yin boshlangan ! Iltimos o`yin tugashini kuting .";
+                    guna2HtmlLabel1.Visible = true;
+                }
+
+
 
             /*
 
@@ -138,7 +146,7 @@ namespace GameMafia.UI
         {
             var db = new MafiaGameDb();
             var player = db.Player.FirstOrDefault(player => player.UserId == user.UserId);
-            if (player != null)
+            if (player != null && db.Player.Count()== player.CountPlayersStart)
             {
                 Game game = new Game(player);
                 game.Show();
@@ -185,10 +193,10 @@ namespace GameMafia.UI
                 }
                 else
                 {
-                    guna2Button1.Visible = true;
-
                     if (db.Player.Count() == db.Player.ToList()[0].CountPlayersStart)
+
                     {
+                        guna2Button1.Visible = true;
                         guna2HtmlLabel1.Visible = true;
                     }
 
